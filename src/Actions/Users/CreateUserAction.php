@@ -43,7 +43,6 @@ class CreateUserAction extends BAction {
             $user_id = $this->repo->insert($data['email'], $password_hash);
 
             // Assign user role
-            // User role id = 2
             $this->role_repo->assignRole($user_id, 2);
 
             $this->db->commit();
