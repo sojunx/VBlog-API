@@ -4,7 +4,7 @@ PHINX = vendor/bin/phinx
 .PHONY: re-migrate migrate seed create rollback run
 
 run:
-	@composer start
+	@php -S localhost:8080 -t public
 
 migrate:
 	@echo "Migrating..."

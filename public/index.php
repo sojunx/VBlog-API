@@ -1,6 +1,7 @@
 <?php
 
 use App\Exceptions\ApiException;
+use App\Middlewares\CorsMiddleware;
 use DI\ContainerBuilder;
 use Dotenv\Dotenv;
 use Slim\Factory\AppFactory;
@@ -17,6 +18,8 @@ $container = $builder->build();
 
 AppFactory::setContainer($container);
 $app = AppFactory::create();
+
+$app->add(new CorsMiddleware($app->getResponseFactory()));
 
 $app->addBodyParsingMiddleware();
 $app->addRoutingMiddleware();
