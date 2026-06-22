@@ -23,6 +23,10 @@ class UserRoleSeeder extends AbstractSeed {
                 'role_id' => 2
             ],
             [
+                'user_id' => '6daa1b2e-cfd8-4f58-8567-7d041f6815f6',
+                'role_id' => 2
+            ],
+            [
                 'user_id' => '8ed0c3aa-796d-4dfd-a798-784fc12fa2ee',
                 'role_id' => 3
             ]
