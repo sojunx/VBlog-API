@@ -19,5 +19,5 @@ API_DEBUG=true
 - Run `make migrate`
 - Run `make seed`
 - Run `make run`
-- Run `make rollback` to rollback last migration
+- Run `make rollback` to roll back last migration
 - Start using the API with http://localhost:8000/api/v1
