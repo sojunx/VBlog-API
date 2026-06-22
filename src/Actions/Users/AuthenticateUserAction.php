@@ -10,7 +10,7 @@ use App\Services\SessionService;
 use Psr\Http\Message\ResponseInterface as Response;
 use Psr\Http\Message\ServerRequestInterface as Request;
 
-class AuthenticateUserAction extends BAction {
+class  AuthenticateUserAction extends BAction {
     public function __construct(
         private readonly UsersRepository $repo,
         private readonly SessionService  $session_service,
@@ -31,9 +31,10 @@ class AuthenticateUserAction extends BAction {
 
         $session = $this->session_service->generate($user['id']);
         $cookie = sprintf(
-            'refresh_token=%s; Expires=%s; Path=/api/auth/refresh; HttpOnly; Secure; SameSite=Strict',
+            'refresh_token=%s; Expires=%s; Path=%s; HttpOnly; Secure; SameSite=Strict',
             $session['refresh_token']['token'],
-            gmdate('D, d M Y H:i:s \G\M\T', $session['refresh_token']['expires_at'])
+            gmdate('D, d M Y H:i:s \G\M\T', $session['refresh_token']['expires_at']),
+            $this->SESSION_PATH
         );
 
         return $this->json($response, [

@@ -12,7 +12,7 @@ use function hash;
 use function random_bytes;
 
 readonly class SessionService {
-    private const int|float ACCESS_TOKEN_EXPIRATION_TIME = 15 * 60; // 15 mins
+    private const int|float ACCESS_TOKEN_EXPIRATION_TIME = 60; // 15 mins
     private const int|float REFRESH_TOKEN_EXPIRATION_TIME = 7 * 24 * 60 * 60; // 7 days
 
     public function __construct(private SessionsRepository $repo) {}
@@ -46,6 +46,28 @@ readonly class SessionService {
             throw new BadRequestException('Failed to generate random token');
         } catch (PDOException $ex) {
             throw new BadRequestException('Failed to save session');
+        }
+    }
+
+    public function revoke(string $user_id, string $hashed_access_token): void {
+        try {
+            $this->repo->revokeToken($user_id, $hashed_access_token);
+        } catch (PDOException $ex) {
+            throw new BadRequestException('Failed to revoke session');
+        }
+    }
+
+    public function regrant(string $hashed_refresh_token): array {
+        try {
+            $session = $this->repo->findByRefreshToken($hashed_refresh_token);
+            if (!$session)
+                throw new BadRequestException('Invalid refresh token');
+
+            $this->repo->revokeToken($session['user_id'], $session['access_token_hash']);
+
+            return $this->generate($session['user_id']);
+        } catch (PDOException $ex) {
+            throw new BadRequestException('Failed to regrant session');
         }
     }
 }

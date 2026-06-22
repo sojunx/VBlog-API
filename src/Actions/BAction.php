@@ -9,6 +9,7 @@ use Psr\Http\Message\ResponseInterface as Response;
 use Psr\Http\Message\ServerRequestInterface as Request;
 
 abstract class BAction {
+    protected string $SESSION_PATH = '/';
     protected string $requiredPermission = '';
 
     public function __construct(protected readonly PermissionService $permission_service) {}

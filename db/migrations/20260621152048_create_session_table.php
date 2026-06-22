@@ -6,8 +6,6 @@ use Phinx\Migration\AbstractMigration;
 
 final class CreateSessionTable extends AbstractMigration {
     public function change(): void {
-        // TODO: Add unique constraint on access_token_hash and refresh_token_hash
-//            ->addColumn('is_revoked', 'boolean', ['default' => false, 'null' => false])
         $table = $this->table('sessions');
 
         $table

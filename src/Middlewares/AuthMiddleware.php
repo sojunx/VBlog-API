@@ -10,6 +10,7 @@ use Psr\Http\Message\ServerRequestInterface as Request;
 use Psr\Http\Server\MiddlewareInterface;
 use Psr\Http\Server\RequestHandlerInterface as Handler;
 use function strtotime;
+use function time;
 
 readonly class AuthMiddleware implements MiddlewareInterface {
 
@@ -22,7 +23,7 @@ readonly class AuthMiddleware implements MiddlewareInterface {
         // Get token from header
         $header = $request->getHeaderLine('Authorization');
         if (!preg_match('/Bearer\s(\S+)/', $header, $matches))
-            throw new UnauthorizedException('Token missing');
+            throw new UnauthorizedException('Missing token');
 
         // Get plain token and hash it
         $plain_token = $matches[1];
@@ -31,17 +32,22 @@ readonly class AuthMiddleware implements MiddlewareInterface {
         // Find session by access token
         $session = $this->session_repo->findByAccessToken($hash_token);
         if (!$session)
-            throw new UnauthorizedException('Invalid token');
+            throw new UnauthorizedException('Token invalid');
 
         // Check if access token is expired
         if (strtotime($session['access_expires_at']) < time())
-            throw new UnauthorizedException('Token expired');
+            throw new UnauthorizedException('Access token expired');
+
+        // Check if refresh token is expired
+        if (strtotime($session['refresh_expires_at']) < time())
+            throw new UnauthorizedException('Refresh token expired');
 
         // Get role by user_id
         $role_id = $this->role_repo->findByUserId($session['user_id']);
 
         // Set attributes to request
         $request = $request->withAttribute('user_id', $session['user_id']);
+        $request = $request->withAttribute('hashed_access_token', $hash_token);
         $request = $request->withAttribute('role_id', $role_id);
 
         // Continue request
