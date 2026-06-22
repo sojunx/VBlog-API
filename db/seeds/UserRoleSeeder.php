@@ -12,14 +12,6 @@ class UserRoleSeeder extends AbstractSeed {
         ];
     }
 
-    /**
-     * Run Method.
-     *
-     * Write your database seeder using this method.
-     *
-     * More information on writing seeders is available here:
-     * https://book.cakephp.org/phinx/0/en/seeding.html
-     */
     public function run(): void {
         $data = [
             [
@@ -30,6 +22,10 @@ class UserRoleSeeder extends AbstractSeed {
                 'user_id' => '6382deb1-a8d5-408c-a307-24e53efecad9',
                 'role_id' => 2
             ],
+            [
+                'user_id' => '8ed0c3aa-796d-4dfd-a798-784fc12fa2ee',
+                'role_id' => 3
+            ]
         ];
 
         $table = $this->table('user_roles');

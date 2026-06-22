@@ -28,7 +28,7 @@ class UserSeeder extends AbstractSeed {
                 'created_at' => date('Y-m-d H:i:s'),
             ],
             [
-                'id' => '27b0b78b-7b82-4909-bf07-6e2102f8d20b',
+                'id' => '8ed0c3aa-796d-4dfd-a798-784fc12fa2ee',
                 'email' => 'support@localhost.com',
                 'password_hash' => password_hash('support', PASSWORD_BCRYPT),
                 'created_at' => date('Y-m-d H:i:s'),

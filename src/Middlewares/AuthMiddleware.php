@@ -33,10 +33,6 @@ readonly class AuthMiddleware implements MiddlewareInterface {
         if (!$session)
             throw new UnauthorizedException('Invalid token');
 
-        // Check if access token is revoked
-        if ($session['is_revoked'])
-            throw new UnauthorizedException('Token revoked');
-
         // Check if access token is expired
         if (strtotime($session['access_expires_at']) < time())
             throw new UnauthorizedException('Token expired');
