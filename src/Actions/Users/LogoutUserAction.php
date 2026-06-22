@@ -24,8 +24,12 @@ class LogoutUserAction extends BAction {
         $hashed_access_token = $request->getAttribute('hashed_access_token');
         $this->session_service->revoke($user_id, $hashed_access_token);
 
-        // Clear the refresh token cookie
-        $cookie = sprintf('refresh_token=; Max-Age=0; Path=%s; HttpOnly; Secure; SameSite=Strict', $this->SESSION_PATH);
-        return $this->json($response, ['message' => 'You have been logged out'])->withHeader('Set-Cookie', $cookie);
+        // Clear the cookies
+        $at_cookie = sprintf('access_token=; Max-Age=0; Path=%s; HttpOnly; Secure; SameSite=Strict', $this->SESSION_PATH);
+        $rt_cookie = sprintf('refresh_token=; Max-Age=0; Path=%s; HttpOnly; Secure; SameSite=Strict', $this->SESSION_PATH);
+        
+        return $this->json($response, ['message' => 'You have been logged out'])
+            ->withAddedHeader('Set-Cookie', $at_cookie)
+            ->withAddedHeader('Set-Cookie', $rt_cookie);
     }
 }

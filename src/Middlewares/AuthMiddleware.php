@@ -20,13 +20,25 @@ readonly class AuthMiddleware implements MiddlewareInterface {
     ) {}
 
     public function process(Request $request, Handler $handler): Response {
-        // Get token from header
-        $header = $request->getHeaderLine('Authorization');
-        if (!preg_match('/Bearer\s(\S+)/', $header, $matches))
+        $plain_token = null;
+
+        // Try getting token from Cookie first
+        $cookies = $request->getCookieParams();
+        if (!empty($cookies['access_token'])) {
+            $plain_token = $cookies['access_token'];
+        } else {
+            // Fallback to Authorization header
+            $header = $request->getHeaderLine('Authorization');
+            if (preg_match('/Bearer\s(\S+)/', $header, $matches)) {
+                $plain_token = $matches[1];
+            }
+        }
+
+        if (!$plain_token) {
             throw new UnauthorizedException('Missing token');
+        }
 
         // Get plain token and hash it
-        $plain_token = $matches[1];
         $hash_token = hash('sha256', $plain_token);
 
         // Find session by access token
