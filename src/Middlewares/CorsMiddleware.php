@@ -14,7 +14,10 @@ readonly class CorsMiddleware implements MiddlewareInterface {
 
     public function process(Request $request, Handler $handler): Response {
         $origin = $request->getHeaderLine('Origin');
-        $allowed_origins = ['http://localhost:3000'];
+        $allowed_origins = [
+            'http://localhost:3000',
+            'http://localhost:5173'
+        ];
 
         if ($request->getMethod() === 'OPTIONS')
             $response = $this->factory->createResponse();
