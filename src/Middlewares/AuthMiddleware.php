@@ -2,6 +2,7 @@
 
 namespace App\Middlewares;
 
+use App\Exceptions\GoneException;
 use App\Exceptions\UnauthorizedException;
 use App\Repositories\RolesRepository;
 use App\Repositories\SessionsRepository;
@@ -44,7 +45,7 @@ readonly class AuthMiddleware implements MiddlewareInterface {
 
         // Check if access token is expired
         if (strtotime($session['access_expires_at']) < time())
-            throw new UnauthorizedException('Access token expired');
+            throw new GoneException('Access token expired');
 
         // Check if refresh token is expired
         if (strtotime($session['refresh_expires_at']) < time())
