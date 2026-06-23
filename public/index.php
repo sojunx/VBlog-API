@@ -19,13 +19,13 @@ $container = $builder->build();
 AppFactory::setContainer($container);
 $app = AppFactory::create();
 
-$app->add(new CorsMiddleware($app->getResponseFactory()));
-
 $app->addBodyParsingMiddleware();
 $app->addRoutingMiddleware();
 
 $debug = (bool)($_ENV['API_DEBUG'] ?? false);
 $errorMiddleware = $app->addErrorMiddleware($debug, true, true);
+
+$app->add(new CorsMiddleware($app->getResponseFactory()));
 
 $errorMiddleware->setDefaultErrorHandler(
     function (

@@ -30,16 +30,31 @@ class  AuthenticateUserAction extends BAction {
             throw new ValidationException('Invalid credentials');
 
         $session = $this->session_service->generate($user['id']);
-        $cookie = sprintf(
+        
+        $at_cookie = sprintf(
+            'access_token=%s; Expires=%s; Path=%s; HttpOnly; Secure; SameSite=Strict',
+            $session['access_token']['token'],
+            gmdate('D, d M Y H:i:s \G\M\T', $session['access_token']['expires_at']),
+            $this->SESSION_PATH
+        );
+
+        $rt_cookie = sprintf(
             'refresh_token=%s; Expires=%s; Path=%s; HttpOnly; Secure; SameSite=Strict',
             $session['refresh_token']['token'],
             gmdate('D, d M Y H:i:s \G\M\T', $session['refresh_token']['expires_at']),
             $this->SESSION_PATH
         );
 
-        return $this->json($response, [
-            'access_token' => $session['access_token']['token'],
-            'id' => $user['id']
-        ])->withHeader('Set-Cookie', $cookie);
+        $response = $this->json($response, [
+            'user' => [
+                'id' => $user['id'],
+                'email' => $user['email'],
+                'created_at' => $user['created_at']
+            ]
+        ]);
+
+        return $response
+            ->withAddedHeader('Set-Cookie', $at_cookie)
+            ->withAddedHeader('Set-Cookie', $rt_cookie);
     }
 }
