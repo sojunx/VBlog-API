@@ -9,10 +9,8 @@ use Psr\Http\Server\MiddlewareInterface;
 use Psr\Http\Server\RequestHandlerInterface as Handler;
 use function in_array;
 
-class CorsMiddleware implements MiddlewareInterface {
-    public function __construct(
-        private readonly ResponseFactoryInterface $factory
-    ) {}
+readonly class CorsMiddleware implements MiddlewareInterface {
+    public function __construct(private ResponseFactoryInterface $factory) {}
 
     public function process(Request $request, Handler $handler): Response {
         $origin = $request->getHeaderLine('Origin');

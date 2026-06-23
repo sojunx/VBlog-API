@@ -28,6 +28,12 @@ class UserSeeder extends AbstractSeed {
                 'created_at' => date('Y-m-d H:i:s'),
             ],
             [
+                'id' => '6daa1b2e-cfd8-4f58-8567-7d041f6815f6',
+                'email' => 'user2@localhost.com',
+                'password_hash' => password_hash('user2', PASSWORD_BCRYPT),
+                'created_at' => date('Y-m-d H:i:s'),
+            ],
+            [
                 'id' => '8ed0c3aa-796d-4dfd-a798-784fc12fa2ee',
                 'email' => 'support@localhost.com',
                 'password_hash' => password_hash('support', PASSWORD_BCRYPT),
