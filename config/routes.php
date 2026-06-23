@@ -5,6 +5,7 @@ use App\Actions\Posts\ListPostsAction;
 use App\Actions\Posts\UpdatePostAction;
 use App\Actions\Users\AuthenticateUserAction;
 use App\Actions\Users\CreateUserAction;
+use App\Actions\Users\GetUserAction;
 use App\Actions\Users\ListUsersAction;
 use App\Actions\Users\LogoutUserAction;
 use App\Actions\Users\RegrantUserAccessAction;
@@ -21,6 +22,7 @@ return function (App $app) {
             $route->post('/authenticate', AuthenticateUserAction::class);
             $route->get('/refresh', RegrantUserAccessAction::class);
 
+            $route->get('/me', GetUserAction::class)->add(AuthMiddleware::class);
             $route->get('', ListUsersAction::class)->add(AuthMiddleware::class);
             $route->delete('/logout', LogoutUserAction::class)->add(AuthMiddleware::class);
         });

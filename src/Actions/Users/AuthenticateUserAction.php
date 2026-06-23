@@ -3,6 +3,7 @@
 namespace App\Actions\Users;
 
 use App\Actions\BAction;
+use App\DTOs\UserDto;
 use App\Exceptions\ValidationException;
 use App\Repositories\UsersRepository;
 use App\Services\PermissionService;
@@ -30,7 +31,7 @@ class  AuthenticateUserAction extends BAction {
             throw new ValidationException('Invalid credentials');
 
         $session = $this->session_service->generate($user['id']);
-        
+
         $at_cookie = sprintf(
             'access_token=%s; Expires=%s; Path=%s; HttpOnly; Secure; SameSite=Strict',
             $session['access_token']['token'],
@@ -45,15 +46,8 @@ class  AuthenticateUserAction extends BAction {
             $this->SESSION_PATH
         );
 
-        $response = $this->json($response, [
-            'user' => [
-                'id' => $user['id'],
-                'email' => $user['email'],
-                'created_at' => $user['created_at']
-            ]
-        ]);
-
-        return $response
+        $dto = UserDto::fromArray($user);
+        return $this->json($response, ['message' => 'You are logged in', 'user' => $dto])
             ->withAddedHeader('Set-Cookie', $at_cookie)
             ->withAddedHeader('Set-Cookie', $rt_cookie);
     }

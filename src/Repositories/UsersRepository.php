@@ -33,4 +33,12 @@ readonly class UsersRepository {
 
         return $stmt->fetch() ?: null;
     }
+
+    public function findById(string $id): ?array {
+        $sql = 'SELECT * FROM users WHERE id = :id';
+        $stmt = $this->db->prepare($sql);
+        $stmt->execute(['id' => $id]);
+
+        return $stmt->fetch() ?: null;
+    }
 }

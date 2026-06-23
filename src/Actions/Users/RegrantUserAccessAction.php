@@ -42,7 +42,7 @@ class RegrantUserAccessAction extends BAction {
             $this->SESSION_PATH
         );
 
-        return $this->json($response, ['access_token' => $session['access_token']['token']])
+        return $this->json($response, ['message' => 'Your access token has been refreshed'])
             ->withAddedHeader('Set-Cookie', $at_cookie)
             ->withAddedHeader('Set-Cookie', $rt_cookie);
     }
