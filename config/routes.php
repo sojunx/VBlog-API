@@ -9,6 +9,7 @@ use App\Actions\Users\GetUserAction;
 use App\Actions\Users\ListUsersAction;
 use App\Actions\Users\LogoutUserAction;
 use App\Actions\Users\RegrantUserAccessAction;
+use App\Actions\Users\UpdateUserProfileAction;
 use App\Middlewares\AuthMiddleware;
 use Slim\App;
 use Slim\Routing\RouteCollectorProxy;
@@ -25,6 +26,7 @@ return function (App $app) {
             $route->get('/me', GetUserAction::class)->add(AuthMiddleware::class);
             $route->get('', ListUsersAction::class)->add(AuthMiddleware::class);
             $route->delete('/logout', LogoutUserAction::class)->add(AuthMiddleware::class);
+            $route->post('/update', UpdateUserProfileAction::class)->add(AuthMiddleware::class);
         });
 
         // ROUTES: /api/v1/posts

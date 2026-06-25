@@ -5,6 +5,7 @@ namespace App\Actions\Users;
 use App\Actions\BAction;
 use App\DTOs\UserDto;
 use App\Exceptions\ValidationException;
+use App\Repositories\RolesRepository;
 use App\Repositories\UsersRepository;
 use App\Services\PermissionService;
 use App\Services\SessionService;
@@ -14,6 +15,7 @@ use Psr\Http\Message\ServerRequestInterface as Request;
 class  AuthenticateUserAction extends BAction {
     public function __construct(
         private readonly UsersRepository $repo,
+        private readonly RolesRepository $role_repo,
         private readonly SessionService  $session_service,
         PermissionService                $permission_service
     ) {
@@ -46,7 +48,8 @@ class  AuthenticateUserAction extends BAction {
             $this->SESSION_PATH
         );
 
-        $dto = UserDto::fromArray($user);
+        $role_code = $this->role_repo->findRoleCodeByUserId($user['id']);
+        $dto = UserDto::fromArray($user, $role_code);
         return $this->json($response, ['message' => 'You are logged in', 'user' => $dto])
             ->withAddedHeader('Set-Cookie', $at_cookie)
             ->withAddedHeader('Set-Cookie', $rt_cookie);
