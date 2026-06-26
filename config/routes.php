@@ -1,5 +1,10 @@
 <?php
 
+use App\Actions\Books\CreateBookAction;
+use App\Actions\Books\DeleteBookAction;
+use App\Actions\Books\GetBookAction;
+use App\Actions\Books\ListBooksAction;
+use App\Actions\Books\UpdateBookAction;
 use App\Actions\Posts\GetPostAction;
 use App\Actions\Posts\ListPostsAction;
 use App\Actions\Posts\UpdatePostAction;
@@ -35,6 +40,15 @@ return function (App $app) {
             $route->get('/{id}', GetPostAction::class);
 
             $route->put('/{id}', UpdatePostAction::class)->add(AuthMiddleware::class);
+        });
+
+        // ROUTES: /api/v1/books
+        $version->group('/books', function (RouteCollectorProxy $route) {
+            $route->post('', CreateBookAction::class)->add(AuthMiddleware::class);
+            $route->get('', ListBooksAction::class)->add(AuthMiddleware::class);
+            $route->get('/{id}', GetBookAction::class)->add(AuthMiddleware::class);
+            $route->delete('/{id}', DeleteBookAction::class)->add(AuthMiddleware::class);
+            $route->put('/{id}', UpdateBookAction::class)->add(AuthMiddleware::class);
         });
     });
 };
