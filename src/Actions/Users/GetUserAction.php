@@ -23,7 +23,8 @@ class GetUserAction extends BAction {
         $user_id = $request->getAttribute('user_id');
         $user = $this->repo->findById($user_id);
 
-        $role_code = $this->role_repo->findRoleCodeByUserId($user_id);
+        $role_id = $request->getAttribute('role_id');
+        $role_code = $this->role_repo->findCodeById($role_id);
         $dto = UserDto::fromArray($user, $role_code);
         return $this->json($response, ['message' => 'User found', 'user' => $dto]);
     }

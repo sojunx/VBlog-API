@@ -104,7 +104,8 @@ class UpdateUserProfileAction extends BAction {
 
         // Retrieve fresh user details and roles to return
         $updatedUser = $this->repo->findById($userId);
-        $role = $this->role_repo->findRoleCodeByUserId($userId);
+        $roleId = $request->getAttribute('role_id');
+        $role = $this->role_repo->findCodeById($roleId);
 
         $userDto = UserDto::fromArray($updatedUser, $role);
 
