@@ -2,11 +2,9 @@
 
 namespace App\Repositories;
 
-use PDO;
 use Ramsey\Uuid\Uuid;
 
-readonly class UsersRepository {
-    public function __construct(private PDO $db) {}
+class UsersRepository extends AbstractRepository {
 
     public function insert(string $email, string $password_hash): string {
         $user_id = Uuid::uuid4()->toString();
@@ -32,7 +30,7 @@ readonly class UsersRepository {
                 LEFT JOIN user_roles ur ON u.id = ur.user_id
                 LEFT JOIN roles r ON ur.role_id = r.id
                 LIMIT :limit OFFSET :offset';
-                
+
         $stmt = $this->db->prepare($sql);
         $stmt->bindValue(':limit', $limit, \PDO::PARAM_INT);
         $stmt->bindValue(':offset', $offset, \PDO::PARAM_INT);
