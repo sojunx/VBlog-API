@@ -14,12 +14,10 @@ final class CreateUserRoleTable extends AbstractMigration {
             ->addForeignKey('user_id', 'users', 'id', [
                 'delete' => 'CASCADE',
                 'update' => 'NO_ACTION',
-                'constraint' => 'fk_user_roles_user_id'
             ])
             ->addForeignKey('role_id', 'roles', 'id', [
                 'delete' => 'CASCADE',
                 'update' => 'NO_ACTION',
-                'constraint' => 'fk_user_roles_role_id'
             ])
             ->create();
     }

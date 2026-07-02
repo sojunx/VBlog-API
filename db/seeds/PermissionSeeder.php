@@ -2,35 +2,31 @@
 
 declare(strict_types=1);
 
-use Phinx\Seed\AbstractSeed;
-
-class PermissionSeeder extends AbstractSeed {
-    /**
-     * Run Method.
-     *
-     * Write your database seeder using this method.
-     *
-     * More information on writing seeders is available here:
-     * https://book.cakephp.org/phinx/0/en/seeding.html
-     */
+class PermissionSeeder extends BSeeder {
     public function run(): void {
         $data = [
-            // User perms
+            // Book perms
             [
-                'id' => 1,
-                'code' => 'user.read'
+                'id' => 12,
+                'code' => 'book.create'
             ],
             [
-                'id' => 2,
-                'code' => 'user.update'
+                'id' => 13,
+                'code' => 'book.read'
             ],
             [
-                'id' => 3,
-                'code' => 'user.delete'
+                'id' => 14,
+                'code' => 'book.update'
             ],
             [
-                'id' => 4,
-                'code' => 'user.create'
+                'id' => 15,
+                'code' => 'book.delete'
+            ],
+
+            // Permission perms
+            [
+                'id' => 10,
+                'code' => 'permission.grant'
             ],
 
             // Post perms
@@ -57,24 +53,29 @@ class PermissionSeeder extends AbstractSeed {
                 'code' => 'role.assign'
             ],
 
-            // Grant perm
+            // User perms
             [
-                'id' => 10,
-                'code' => 'permission.grant'
+                'id' => 4,
+                'code' => 'user.create'
             ],
-
+            [
+                'id' => 1,
+                'code' => 'user.read'
+            ],
             [
                 'id' => 11,
                 'code' => 'user.list'
-            ]
+            ],
+            [
+                'id' => 2,
+                'code' => 'user.update'
+            ],
+            [
+                'id' => 3,
+                'code' => 'user.delete'
+            ],
         ];
 
-        $table = $this->table('permissions');
-
-        $this->execute('SET FOREIGN_KEY_CHECKS=0');
-        $table->truncate();
-        $this->execute('SET FOREIGN_KEY_CHECKS=1');
-
-        $table->insert($data)->saveData();
+        $this->seed('permissions', $data);
     }
 }

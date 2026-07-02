@@ -2,9 +2,7 @@
 
 declare(strict_types=1);
 
-use Phinx\Seed\AbstractSeed;
-
-class UserRoleSeeder extends AbstractSeed {
+class UserRoleSeeder extends BSeeder {
     public function getDependencies(): array {
         return [
             'UserSeeder',
@@ -32,12 +30,6 @@ class UserRoleSeeder extends AbstractSeed {
             ]
         ];
 
-        $table = $this->table('user_roles');
-
-        $this->execute('SET FOREIGN_KEY_CHECKS=0');
-        $table->truncate();
-        $this->execute('SET FOREIGN_KEY_CHECKS=1');
-
-        $table->insert($data)->saveData();
+        $this->seed('user_roles', $data);
     }
 }

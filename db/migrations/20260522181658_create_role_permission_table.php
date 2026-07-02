@@ -14,12 +14,10 @@ final class CreateRolePermissionTable extends AbstractMigration {
             ->addForeignKey('role_id', 'roles', 'id', [
                 'delete' => 'CASCADE',
                 'update' => 'NO_ACTION',
-                'constraint' => 'fk_role_permissions_role_id'
             ])
             ->addForeignKey('permission_id', 'permissions', 'id', [
                 'delete' => 'CASCADE',
                 'update' => 'NO_ACTION',
-                'constraint' => 'fk_role_permissions_permission_id'
             ])
             ->create();
     }
