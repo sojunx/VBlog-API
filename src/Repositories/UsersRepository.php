@@ -20,9 +20,23 @@ readonly class UsersRepository {
         return $user_id;
     }
 
-    public function findAll(): array {
-        $sql = 'SELECT * FROM users';
+    public function countAll(): int {
+        $sql = 'SELECT COUNT(id) FROM users';
         $stmt = $this->db->query($sql);
+        return (int)$stmt->fetchColumn();
+    }
+
+    public function findAllPaginated(int $limit, int $offset): array {
+        $sql = 'SELECT u.*, r.code AS role 
+                FROM users u
+                LEFT JOIN user_roles ur ON u.id = ur.user_id
+                LEFT JOIN roles r ON ur.role_id = r.id
+                LIMIT :limit OFFSET :offset';
+                
+        $stmt = $this->db->prepare($sql);
+        $stmt->bindValue(':limit', $limit, \PDO::PARAM_INT);
+        $stmt->bindValue(':offset', $offset, \PDO::PARAM_INT);
+        $stmt->execute();
 
         return $stmt->fetchAll();
     }
