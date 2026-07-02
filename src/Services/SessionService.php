@@ -12,15 +12,8 @@ use function hash;
 use function random_bytes;
 
 readonly class SessionService {
-    // Token validity lifetime (on the server/database)
-    private const int|float ACCESS_TOKEN_EXPIRATION_TIME = 15 * 60; // 15 mins
+    private const int|float ACCESS_TOKEN_EXPIRATION_TIME = 60; // 15 mins
     private const int|float REFRESH_TOKEN_EXPIRATION_TIME = 7 * 24 * 60 * 60; // 7 days
-    // private const int|float ACCESS_TOKEN_EXPIRATION_TIME = 15; //15s
-    // private const int|float REFRESH_TOKEN_EXPIRATION_TIME = 20; //10s
-
-    // Cookie lifetime (in the browser)
-    private const int|float ACCESS_TOKEN_COOKIE_EXPIRATION_TIME = 7 * 24 * 60 * 60; // 7 days
-    private const int|float REFRESH_TOKEN_COOKIE_EXPIRATION_TIME = 7 * 24 * 60 * 60; // 7 days
 
     public function __construct(private SessionsRepository $repo) {}
 
@@ -28,8 +21,6 @@ readonly class SessionService {
         $now = time();
         $access_expires_time = $now + self::ACCESS_TOKEN_EXPIRATION_TIME;
         $refresh_expires_time = $now + self::REFRESH_TOKEN_EXPIRATION_TIME;
-        $access_cookie_expires_time = $now + self::ACCESS_TOKEN_COOKIE_EXPIRATION_TIME;
-        $refresh_cookie_expires_time = $now + self::REFRESH_TOKEN_COOKIE_EXPIRATION_TIME;
 
         try {
             // Generate random tokens
@@ -48,16 +39,8 @@ readonly class SessionService {
             $this->repo->insert([$user_id, $hashed_access_token, $hashed_refresh_token, $access_expires_at, $refresh_expires_at]);
 
             return [
-                'access_token' => [
-                    'token' => $plain_access_token,
-                    'expires_at' => $access_expires_time,
-                    'cookie_expires_at' => $access_cookie_expires_time
-                ],
-                'refresh_token' => [
-                    'token' => $plain_refresh_token,
-                    'expires_at' => $refresh_expires_time,
-                    'cookie_expires_at' => $refresh_cookie_expires_time
-                ],
+                'access_token' => ['token' => $plain_access_token, 'expires_at' => $access_expires_time],
+                'refresh_token' => ['token' => $plain_refresh_token, 'expires_at' => $refresh_expires_time],
             ];
         } catch (RandomException $ex) {
             throw new BadRequestException('Failed to generate random token');

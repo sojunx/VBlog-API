@@ -31,14 +31,14 @@ class RegrantUserAccessAction extends BAction {
         $at_cookie = sprintf(
             'access_token=%s; Expires=%s; Path=%s; HttpOnly; Secure; SameSite=Strict',
             $session['access_token']['token'],
-            gmdate('D, d M Y H:i:s \G\M\T', $session['access_token']['cookie_expires_at']),
+            gmdate('D, d M Y H:i:s \G\M\T', $session['access_token']['expires_at']),
             $this->SESSION_PATH
         );
 
         $rt_cookie = sprintf(
             'refresh_token=%s; Expires=%s; Path=%s; HttpOnly; Secure; SameSite=Strict',
             $session['refresh_token']['token'],
-            gmdate('D, d M Y H:i:s \G\M\T', $session['refresh_token']['cookie_expires_at']),
+            gmdate('D, d M Y H:i:s \G\M\T', $session['refresh_token']['expires_at']),
             $this->SESSION_PATH
         );
 

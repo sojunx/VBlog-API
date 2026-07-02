@@ -1,10 +1,5 @@
 <?php
 
-use App\Actions\Books\CreateBookAction;
-use App\Actions\Books\DeleteBookAction;
-use App\Actions\Books\GetBookAction;
-use App\Actions\Books\ListBooksAction;
-use App\Actions\Books\UpdateBookAction;
 use App\Actions\Posts\GetPostAction;
 use App\Actions\Posts\ListPostsAction;
 use App\Actions\Posts\UpdatePostAction;
@@ -14,7 +9,6 @@ use App\Actions\Users\GetUserAction;
 use App\Actions\Users\ListUsersAction;
 use App\Actions\Users\LogoutUserAction;
 use App\Actions\Users\RegrantUserAccessAction;
-use App\Actions\Users\UpdateUserProfileAction;
 use App\Middlewares\AuthMiddleware;
 use Slim\App;
 use Slim\Routing\RouteCollectorProxy;
@@ -31,7 +25,6 @@ return function (App $app) {
             $route->get('/me', GetUserAction::class)->add(AuthMiddleware::class);
             $route->get('', ListUsersAction::class)->add(AuthMiddleware::class);
             $route->delete('/logout', LogoutUserAction::class)->add(AuthMiddleware::class);
-            $route->post('/update', UpdateUserProfileAction::class)->add(AuthMiddleware::class);
         });
 
         // ROUTES: /api/v1/posts
@@ -40,15 +33,6 @@ return function (App $app) {
             $route->get('/{id}', GetPostAction::class);
 
             $route->put('/{id}', UpdatePostAction::class)->add(AuthMiddleware::class);
-        });
-
-        // ROUTES: /api/v1/books
-        $version->group('/books', function (RouteCollectorProxy $route) {
-            $route->post('', CreateBookAction::class)->add(AuthMiddleware::class);
-            $route->get('', ListBooksAction::class)->add(AuthMiddleware::class);
-            $route->get('/{id}', GetBookAction::class)->add(AuthMiddleware::class);
-            $route->delete('/{id}', DeleteBookAction::class)->add(AuthMiddleware::class);
-            $route->put('/{id}', UpdateBookAction::class)->add(AuthMiddleware::class);
         });
     });
 };
