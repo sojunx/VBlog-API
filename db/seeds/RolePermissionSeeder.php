@@ -2,9 +2,7 @@
 
 declare(strict_types=1);
 
-use Phinx\Seed\AbstractSeed;
-
-class RolePermissionSeeder extends AbstractSeed {
+class RolePermissionSeeder extends BSeeder {
     public function getDependencies(): array {
         return [
             'RoleSeeder',
@@ -12,14 +10,6 @@ class RolePermissionSeeder extends AbstractSeed {
         ];
     }
 
-    /**
-     * Run Method.
-     *
-     * Write your database seeder using this method.
-     *
-     * More information on writing seeders is available here:
-     * https://book.cakephp.org/phinx/0/en/seeding.html
-     */
     public function run(): void {
         $data = [
             // Admin role perms
@@ -43,11 +33,21 @@ class RolePermissionSeeder extends AbstractSeed {
                 'role_id' => 1,
                 'permission_id' => 11
             ],
-
-            // Support role perms
             [
-                'role_id' => 3,
-                'permission_id' => 4
+                'role_id' => 1,
+                'permission_id' => 12
+            ],
+            [
+                'role_id' => 1,
+                'permission_id' => 13
+            ],
+            [
+                'role_id' => 1,
+                'permission_id' => 14
+            ],
+            [
+                'role_id' => 1,
+                'permission_id' => 15
             ],
 
             // User role perms
@@ -70,15 +70,15 @@ class RolePermissionSeeder extends AbstractSeed {
             [
                 'role_id' => 2,
                 'permission_id' => 7
-            ]
+            ],
+
+            // Support role perms
+            [
+                'role_id' => 3,
+                'permission_id' => 4
+            ],
         ];
 
-        $table = $this->table('role_permissions');
-
-        $this->execute('SET FOREIGN_KEY_CHECKS=0');
-        $table->truncate();
-        $this->execute('SET FOREIGN_KEY_CHECKS=1');
-
-        $table->insert($data)->saveData();
+        $this->seed('role_permissions', $data);
     }
 }

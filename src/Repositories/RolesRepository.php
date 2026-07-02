@@ -2,10 +2,7 @@
 
 namespace App\Repositories;
 
-use PDO;
-
-readonly class RolesRepository {
-    public function __construct(private PDO $db) {}
+class RolesRepository extends AbstractRepository {
 
     public function findByUserId(string $user_id): int {
         $sql = 'SELECT * FROM user_roles WHERE user_id = ?';

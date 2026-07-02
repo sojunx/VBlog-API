@@ -13,7 +13,6 @@ final class CreateSessionTable extends AbstractMigration {
             ->addForeignKey('user_id', 'users', 'id', [
                 'delete' => 'CASCADE',
                 'update' => 'NO_ACTION',
-                'constraint' => 'fk_sessions_user_id'
             ])
             ->addColumn('access_token_hash', 'string', ['limit' => 64, 'null' => false])
             ->addColumn('refresh_token_hash', 'string', ['limit' => 64, 'null' => false])

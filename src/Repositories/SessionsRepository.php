@@ -2,10 +2,7 @@
 
 namespace App\Repositories;
 
-use PDO;
-
-readonly class SessionsRepository {
-    public function __construct(private PDO $db) {}
+class SessionsRepository extends AbstractRepository {
 
     public function insert(array $session): void {
         $sql = 'INSERT INTO sessions (user_id, access_token_hash, refresh_token_hash, access_expires_at, refresh_expires_at) VALUES (?, ?, ?, ?, ?)';

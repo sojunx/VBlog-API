@@ -9,8 +9,10 @@ final class CreateCategoryTable extends AbstractMigration {
         $table = $this->table('categories', ['signed' => false]);
 
         $table
-            ->addColumn('name', 'string', ['limit' => 255, 'null' => false])
+            ->addColumn('title', 'string', ['limit' => 255, 'null' => false])
+            ->addColumn('slug', 'string', ['limit' => 255, 'null' => false])
             ->addColumn('created_at', 'datetime', ['default' => 'CURRENT_TIMESTAMP'])
+            ->addIndex(['slug'], ['unique' => true])
             ->create();
     }
 }

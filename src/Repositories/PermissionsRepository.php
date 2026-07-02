@@ -2,10 +2,7 @@
 
 namespace App\Repositories;
 
-use PDO;
-
-readonly class PermissionsRepository {
-    public function __construct(private PDO $db) {}
+class PermissionsRepository extends AbstractRepository {
 
     public function findByRoleId(int $role_id): array {
         $sql = '
