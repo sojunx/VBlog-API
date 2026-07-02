@@ -83,8 +83,11 @@ class UpdateBookAction extends BAction {
 
         $this->repo->update($id, $filteredData);
 
+        $updatedBook = $this->repo->findById($id);
+
         return $this->json($response, [
-            'message' => 'Book updated successfully'
+            'message' => 'Book updated successfully',
+            'book' => $updatedBook
         ]);
     }
 }
