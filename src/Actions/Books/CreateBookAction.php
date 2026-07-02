@@ -43,13 +43,7 @@ class CreateBookAction extends BAction {
             'cover_image_url' => $data['cover_image_url'] ?? null
         ]);
 
-        $createdBook = [
-            'id' => $bookId,
-            'title' => $data['title'],
-            'author' => $data['author'],
-            'isbn' => $data['isbn'] ?? null,
-            'cover_image_url' => $data['cover_image_url'] ?? null
-        ];
+        $createdBook = $this->repo->findById($bookId);
 
         return $this->json($response, [
             'message' => 'Book created successfully',

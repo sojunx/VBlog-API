@@ -23,6 +23,22 @@ class BooksRepository extends AbstractRepository {
         return $stmt->fetchAll();
     }
 
+    public function countAll(): int {
+        $sql = 'SELECT COUNT(id) FROM books';
+        $stmt = $this->db->query($sql);
+        return (int)$stmt->fetchColumn();
+    }
+
+    public function findAllPaginated(int $limit, int $offset): array {
+        $sql = 'SELECT * FROM books LIMIT :limit OFFSET :offset';
+        $stmt = $this->db->prepare($sql);
+        $stmt->bindValue(':limit', $limit, \PDO::PARAM_INT);
+        $stmt->bindValue(':offset', $offset, \PDO::PARAM_INT);
+        $stmt->execute();
+
+        return $stmt->fetchAll();
+    }
+
     public function findById(int $id): ?array {
         $sql = 'SELECT * FROM books WHERE id = ?';
         $stmt = $this->db->prepare($sql);

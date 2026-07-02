@@ -20,9 +20,21 @@ class ListBooksAction extends BAction {
     }
 
     protected function handle(Request $request, Response $response, array $args): Response {
-        $data = $this->repo->findAll();
+        $queryParams = $request->getQueryParams();
+        
+        $page = isset($queryParams['page']) ? (int)$queryParams['page'] : 1;
+        $limit = isset($queryParams['limit']) ? (int)$queryParams['limit'] : 5;
+
+        $offset = ($page - 1) * $limit;
+
+        $totalItem = $this->repo->countAll();
+
+        $data = $this->repo->findAllPaginated($limit, $offset);
         $books = array_map(fn($book) => BookDto::fromArray($book), $data);
 
-        return $this->json($response, $books);
+        return $this->json($response, [
+            'books' => $books,
+            'totalItem' => $totalItem
+        ]);
     }
 }
