@@ -21,21 +21,9 @@ class ListUsersAction extends BAction {
     }
 
     protected function handle(Request $request, Response $response, array $args): Response {
-        $queryParams = $request->getQueryParams();
-        
-        $page = isset($queryParams['page']) ? (int)$queryParams['page'] : 1;
-        $limit = isset($queryParams['limit']) ? (int)$queryParams['limit'] : 5;
-
-        $offset = ($page - 1) * $limit;
-
-        $totalItem = $this->repo->countAll();
-
-        $data = $this->repo->findAllPaginated($limit, $offset);
+        $data = $this->repo->findAll();
         $users = array_map(fn($user) => UserDto::fromArray($user), $data);
 
-        return $this->json($response, [
-            'users' => $users,
-            'totalItem' => $totalItem
-        ]);
+        return $this->json($response, $users);
     }
 }
